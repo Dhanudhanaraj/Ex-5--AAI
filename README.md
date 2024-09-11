@@ -1,25 +1,62 @@
-<H3>ENTER YOUR NAME</H3>
-<H3>ENTER YOUR REGISTER NO.</H3>
-<H3>EX. NO.5</H3>
-<H3>DATE:</H3>
-<H1 ALIGN =CENTER> Implementation of Kalman Filter</H1>
-<H3>Aim:</H3> To Construct a Python Code to implement the Kalman filter to predict the position and velocity of an object.
-<H3>Algorithm:</H3>
-Step 1: Define the state transition model F, the observation model H, the process noise covariance Q, the measurement noise covariance R, the initial state estimate x0, and the initial error covariance P0.<BR>
-Step 2:  Create a KalmanFilter object with these parameters.<BR>
-Step 3: Simulate the movement of the object for a number of time steps, generating true states and measurements. <BR>
-Step 3: For each measurement, predict the next state using kf.predict().<BR>
-Step 4: Update the state estimate based on the measurement using kf.update().<BR>
-Step 5: Store the estimated state in a list.<BR>
-Step 6: Plot the true and estimated positions.<BR>
-<H3>Program:</H3>
-Insert your code here
+<H3>NAME : DHANUMALYA.D</H3>
+<H3>REGISTER NO : 212222230030</H3>
+<H3>EX. NO.4</H3>
+<H3>DATE: 10.9.2024</H3>
+<H1 ALIGN =CENTER> Implementation of Hidden Markov Model</H1>
 
-<H3>Output:</H3>
-Show the results here
+## Aim: 
+Construct a Python code to find the sequence of hidden states by the known sequence of observances using Hidden Markov Model. Consider two hidden states Sunny and Rainy with observable states,happy and sad.
 
-<H3>Results:</H3>
-Thus, Kalman filter is implemented to predict the next position and   velocity in Python
+## Algorithm:
 
+Step 1:Define the transition matrix, which specifies the probability of transitioning from  one hidden state to another.<br>
+Step 2:Define the emission matrix, which specifies the probability of observing each possible observation given each hidden state.<br>
+Step 3:Define the initial probabilities, which specify the probability of starting in each possible hidden state.<br>
+Step 4:Define the observed sequence, which is the sequence of observations need to  be analyzed.<br>
+Step 5:Initialize the alpha matrix with zeros, where each row represents a time step and each column represents a possible hidden state.<br>
+Step 6:Calculate the first row of the alpha matrix by multiplying the initial  probabilities by the emission probabilities for the first observation.<br>
+Step 7:Loop through the rest of the observed sequence and calculate the rest of the alpha matrix by multiplying the emission probabilities by the sum of the product of 
+       the previous row of the alpha matrix and the corresponding row of the transition matrix.<br>
+Step 8:Calculate the probability of the observed sequence by summing the last row of the alpha matrix.<br>
+Step 9:Find the most likely sequence of hidden states by selecting the hidden state with the highest probability at each time step based on the alpha matrix.<br>
 
+## Program:
+```
+#import required libraries
+
+import numpy as np
+
+# input values
+
+transition_matrix = np.array([[0.7,0.3],[0.4,0.6]])
+emission_matrix = np.array([[0.1,0.9],[0.8,0.2]])
+initial_probabilities=np.array([0.5,0.5])
+observed_sequence= np.array([1,1,1,0,0,1])
+
+alpha =np.zeros((len(observed_sequence),len(initial_probabilities)))
+alpha[0,:] = initial_probabilities*emission_matrix[:,observed_sequence[0]]
+for t in range(1,len(observed_sequence)):
+  for j in range(len(initial_probabilities)):
+    alpha[t,j] = emission_matrix[j,observed_sequence[t]]*np.sum(alpha[t-1,:]*transition_matrix[:,j])
+
+probability=np.sum(alpha[-1,:])
+print("The probability of the observed sequence is:", probability)
+
+most_likely_sequence=[]
+for t in range(len(observed_sequence)):
+  if alpha[t,0]> alpha[t,1]:
+    most_likely_sequence.append("sunny")
+  else :
+    most_likely_sequence.append("rainy")
+
+print("The most likely sequence of weather state is:", most_likely_sequence)
+
+```
+## Output:
+![Screenshot 2024-09-11 154250](https://github.com/user-attachments/assets/59e29edf-d4c3-4e32-b3fc-73dbd20d10bb)
+
+![Screenshot 2024-09-11 154257](https://github.com/user-attachments/assets/096a11bd-0322-4a69-8035-832ad76002f1)
+
+## Result:
+Thus Hidden Markov Model is implemented using python.
 
